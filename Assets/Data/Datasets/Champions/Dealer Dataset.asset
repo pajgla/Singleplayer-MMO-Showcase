@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817e137ea0f03d94aac5e247910580b2, type: 3}
+  m_Name: Dealer Dataset
+  m_EditorClassIdentifier: 
+  m_HealthStat:
+    m_StatValue: 850
+  m_ManaStat:
+    m_StatValue: 600
+  m_MoveSpeedStat:
+    m_StatValue: 30
+  m_ArmorStat:
+    m_StatValue: 3
+  m_MagicResistStat:
+    m_StatValue: 0
+  m_LifestealStat:
+    m_StatValue: 0
+  m_SpellVampStat:
+    m_StatValue: 0
+  m_AttackRangeStat:
+    m_StatValue: 0
+  m_AttackDamageStat:
+    m_StatValue: 0
+  m_AbilityPowerStat:
+    m_StatValue: 0
+  m_AttackSpeedStat:
+    m_StatValue: 0
+  m_SpellCooldownStat:
+    m_StatValue: 0
+  m_CriticalStrikeChanceStat:
+    m_StatValue: 0

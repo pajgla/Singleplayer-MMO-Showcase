@@ -1,0 +1,34 @@
+{
+    "name": "InputMap_Gameplay",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "a9afbb33-ad30-4001-be37-2f3af80075d8",
+            "actions": [
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "b8398d3e-c142-407b-b141-c26b4ee18846",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b797da85-7f33-42fe-838d-64ae3c0c12b2",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
