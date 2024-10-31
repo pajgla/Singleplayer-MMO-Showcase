@@ -30,17 +30,20 @@ public class InGameCameraController : MonoBehaviour
         CheckTargetTransform();
         
         m_CameraTargetGroundDistance = m_StartingCameraTargetGroundDistance;
+
+        PlayerControlsManager playerControlsManager = PlayerControlsManager.Get();
+        if (playerControlsManager == null)
+        {
+            Debug.LogError("PlayerControlsManager is null");
+            return;
+        }
+
+        playerControlsManager.GetInputMapGameplay().Default.ChampionCameraLock.performed += context => ToggleFollowChampion();
     }
 
     void Update()
     {
         UpdateCameraTargetPosition();
-        
-        //#TODO Move to Character Controller
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            ToggleFollowChampion();
-        }
     }
 
     void LateUpdate()
@@ -68,24 +71,41 @@ public class InGameCameraController : MonoBehaviour
             return;
         
         UpdateCameraPanning();
+        FollowOwnChampion();
         
-        //#TODO Fetch champion's position here and set target's position to that
         Vector3 targetPosition = m_CameraTargetTransform.position;
         targetPosition.y = 0;
         
         m_CameraTargetTransform.position = targetPosition;
     }
 
+    void FollowOwnChampion()
+    {
+        if (m_ShouldFollowChampion)
+        {
+            //Cache ?
+            MatchManager matchManager = MatchManager.Get();
+            if (matchManager == null)
+            {
+                Debug.LogError("MatchManager is null");
+            }
+            else
+            {
+                m_CameraTargetTransform.position = matchManager.GetOwnChampionReference().transform.position;
+            }
+        }
+    }
+    
     void UpdateCameraPanning()
     {
         if (m_ShouldFollowChampion)
             return;
 
-        PlayerController playerController = PlayerController.Get();
-        if (playerController == null)
+        PlayerControlsManager playerControlsManager = PlayerControlsManager.Get();
+        if (playerControlsManager == null)
             return;
 
-        Vector2 mousePosition = playerController.GetInputMapGameplay().Default.MousePosition.ReadValue<Vector2>();
+        Vector2 mousePosition = playerControlsManager.GetInputMapGameplay().Default.MousePosition.ReadValue<Vector2>();
 
         Vector2 panDirection = Vector2.zero;
         
@@ -109,10 +129,18 @@ public class InGameCameraController : MonoBehaviour
             panDirection.y = -m_EdgePanSpeed;
         }
 
+        if (panDirection.x != 0 && panDirection.y != 0)
+        {
+            //Reduce diagonal speed
+            panDirection *= 0.5f;
+        }
+        
         panDirection.x = Mathf.Clamp(panDirection.x, -m_EdgePanDetectionRange, m_EdgePanDetectionRange);
         panDirection.y = Mathf.Clamp(panDirection.y, -m_EdgePanDetectionRange, m_EdgePanDetectionRange);
         
-        m_CameraTargetTransform.position = m_CameraTargetTransform.position + new Vector3(panDirection.x, 0.0f, panDirection.y);
+        Vector3 currentCameraPosition = m_CameraTargetTransform.position;
+        Vector3 destinationCameraPosition = currentCameraPosition + new Vector3(panDirection.x, 0.0f, panDirection.y);
+        m_CameraTargetTransform.position = Vector3.MoveTowards(currentCameraPosition, destinationCameraPosition, m_EdgePanSpeed * Time.deltaTime);
     }
 
     void UpdateCameraPosition()

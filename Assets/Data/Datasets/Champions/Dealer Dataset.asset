@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817e137ea0f03d94aac5e247910580b2, type: 3}
   m_Name: Dealer Dataset
   m_EditorClassIdentifier: 
+  m_EntityName: The Dealer
+  m_EntityDescription: 
+  m_EntityAvatarPath: 
   m_HealthStat:
     m_StatValue: 850
   m_ManaStat:
     m_StatValue: 600
   m_MoveSpeedStat:
-    m_StatValue: 30
+    m_StatValue: 10
   m_ArmorStat:
     m_StatValue: 3
   m_MagicResistStat:
@@ -27,14 +30,16 @@ MonoBehaviour:
   m_SpellVampStat:
     m_StatValue: 0
   m_AttackRangeStat:
-    m_StatValue: 0
+    m_StatValue: 5
   m_AttackDamageStat:
     m_StatValue: 0
   m_AbilityPowerStat:
     m_StatValue: 0
   m_AttackSpeedStat:
-    m_StatValue: 0
+    m_StatValue: 1
   m_SpellCooldownStat:
     m_StatValue: 0
   m_CriticalStrikeChanceStat:
     m_StatValue: 0
+  m_ProjectilePrefab: {fileID: 6728952935163743157, guid: 0dbccb1a5c694ee41b0323713b051636, type: 3}
+  m_ProjectileSpeed: 15

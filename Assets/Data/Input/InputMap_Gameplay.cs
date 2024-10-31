@@ -35,6 +35,33 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""6922d5b0-f08d-46e1-b0ca-f06d4564129f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""29bb4c00-5378-48d3-952c-1fd06482259d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChampionCameraLock"",
+                    ""type"": ""Button"",
+                    ""id"": ""6840bbfe-7af5-4017-b551-bc9d1d2ac822"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -48,6 +75,39 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43e1557e-9996-4fb0-a577-81ef2468d174"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3aef0bd8-de67-4498-836d-7048cd2d46bf"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db78ae38-2bca-489d-bf58-17a493d3db1f"",
+                    ""path"": ""<Keyboard>/#(Y)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChampionCameraLock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +117,9 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_MousePosition = m_Default.FindAction("MousePosition", throwIfNotFound: true);
+        m_Default_MouseLeftClick = m_Default.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_Default_MouseRightClick = m_Default.FindAction("MouseRightClick", throwIfNotFound: true);
+        m_Default_ChampionCameraLock = m_Default.FindAction("ChampionCameraLock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -119,11 +182,17 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Default;
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
     private readonly InputAction m_Default_MousePosition;
+    private readonly InputAction m_Default_MouseLeftClick;
+    private readonly InputAction m_Default_MouseRightClick;
+    private readonly InputAction m_Default_ChampionCameraLock;
     public struct DefaultActions
     {
         private @InputMap_Gameplay m_Wrapper;
         public DefaultActions(@InputMap_Gameplay wrapper) { m_Wrapper = wrapper; }
         public InputAction @MousePosition => m_Wrapper.m_Default_MousePosition;
+        public InputAction @MouseLeftClick => m_Wrapper.m_Default_MouseLeftClick;
+        public InputAction @MouseRightClick => m_Wrapper.m_Default_MouseRightClick;
+        public InputAction @ChampionCameraLock => m_Wrapper.m_Default_ChampionCameraLock;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -136,6 +205,15 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
+            @MouseLeftClick.started += instance.OnMouseLeftClick;
+            @MouseLeftClick.performed += instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+            @MouseRightClick.started += instance.OnMouseRightClick;
+            @MouseRightClick.performed += instance.OnMouseRightClick;
+            @MouseRightClick.canceled += instance.OnMouseRightClick;
+            @ChampionCameraLock.started += instance.OnChampionCameraLock;
+            @ChampionCameraLock.performed += instance.OnChampionCameraLock;
+            @ChampionCameraLock.canceled += instance.OnChampionCameraLock;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -143,6 +221,15 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
+            @MouseLeftClick.started -= instance.OnMouseLeftClick;
+            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
+            @MouseRightClick.started -= instance.OnMouseRightClick;
+            @MouseRightClick.performed -= instance.OnMouseRightClick;
+            @MouseRightClick.canceled -= instance.OnMouseRightClick;
+            @ChampionCameraLock.started -= instance.OnChampionCameraLock;
+            @ChampionCameraLock.performed -= instance.OnChampionCameraLock;
+            @ChampionCameraLock.canceled -= instance.OnChampionCameraLock;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -163,5 +250,8 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
     public interface IDefaultActions
     {
         void OnMousePosition(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnMouseRightClick(InputAction.CallbackContext context);
+        void OnChampionCameraLock(InputAction.CallbackContext context);
     }
 }
