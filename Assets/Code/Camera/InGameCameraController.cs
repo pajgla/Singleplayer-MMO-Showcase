@@ -31,14 +31,14 @@ public class InGameCameraController : MonoBehaviour
         
         m_CameraTargetGroundDistance = m_StartingCameraTargetGroundDistance;
 
-        PlayerControlsManager playerControlsManager = PlayerControlsManager.Get();
-        if (playerControlsManager == null)
+        ControlsManager controlsManager = ControlsManager.Get();
+        if (controlsManager == null)
         {
             Debug.LogError("PlayerControlsManager is null");
             return;
         }
 
-        playerControlsManager.GetInputMapGameplay().Default.ChampionCameraLock.performed += context => ToggleFollowChampion();
+        controlsManager.GetInputMapGameplay().Default.ChampionCameraLock.performed += context => ToggleFollowChampion();
     }
 
     void Update()
@@ -101,11 +101,11 @@ public class InGameCameraController : MonoBehaviour
         if (m_ShouldFollowChampion)
             return;
 
-        PlayerControlsManager playerControlsManager = PlayerControlsManager.Get();
-        if (playerControlsManager == null)
+        ControlsManager controlsManager = ControlsManager.Get();
+        if (controlsManager == null)
             return;
 
-        Vector2 mousePosition = playerControlsManager.GetInputMapGameplay().Default.MousePosition.ReadValue<Vector2>();
+        Vector2 mousePosition = controlsManager.GetInputMapGameplay().Default.MousePosition.ReadValue<Vector2>();
 
         Vector2 panDirection = Vector2.zero;
         

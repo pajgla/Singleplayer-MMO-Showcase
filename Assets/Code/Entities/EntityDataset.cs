@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Entity
 {
@@ -19,13 +20,15 @@ namespace Entity
         public MoveSpeedStat m_MoveSpeedStat;
         public ArmorStat m_ArmorStat;
         public MagicResistStat m_MagicResistStat;
+        public ArmorPenetrationStat m_ArmorPenetrationStat;
+        public MagicResistPenetrationStat m_MagicResistPenetrationStat;
         public LifestealStat m_LifestealStat;
         public SpellVampStat m_SpellVampStat;
         public AttackRangeStat m_AttackRangeStat;
-        public AttackDamageStat m_AttackDamageStat;
+        public PhysicalPowerStat m_PhysicalPowerStat;
         public AbilityPowerStat m_AbilityPowerStat;
         public AttackSpeedStat m_AttackSpeedStat;
-        public SpellCooldownStat m_SpellCooldownStat;
+        [FormerlySerializedAs("m_SpellCooldownStat")] public CooldownReductionStat m_CooldownReductionStat;
         public CriticalStrikeChanceStat m_CriticalStrikeChanceStat;
         
         //Other info

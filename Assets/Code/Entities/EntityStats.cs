@@ -1,184 +1,47 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Entity
 {
-    
-// #region Stat Value
-//     //We have to have wrappers for values because we cannot use arithmetic operations on generic T types. Once Unity
-//     //upgrades to .Net 8, use generic type constraint (where T : INumber<T>) instead.
-//     
-//     public abstract class StatValueBase<T>
-//     {
-//         protected T m_Value;
-//
-//         public abstract void Add(StatValueBase<T> other);
-//         public abstract void Subtract(StatValueBase<T> other);
-//         public abstract void Multiply(StatValueBase<T> other);
-//         public abstract void Divide(StatValueBase<T> other);
-//         
-//         public virtual T GetValue() { return m_Value; }
-//     }
-//
-//     public class FloatStatValue : StatValueBase<float>
-//     {
-//         public FloatStatValue(float value)
-//         {
-//             m_Value = value;
-//         }
-//         
-//         public override void Add(StatValueBase<float> other)
-//         {
-//             m_Value += other.GetValue();
-//         }
-//
-//         public override void Subtract(StatValueBase<float> other)
-//         {
-//             m_Value -= other.GetValue();
-//         }
-//
-//         public override void Multiply(StatValueBase<float> other)
-//         {
-//             m_Value *= other.GetValue();
-//         }
-//
-//         public override void Divide(StatValueBase<float> other)
-//         {
-//             m_Value /= other.GetValue();
-//         }
-//     }
-//
-//     public class FloatPercentageStatValue : StatValueBase<float>
-//     {
-//         public FloatPercentageStatValue(float value)
-//         {
-//             if (value < 0.0f || value > 1.0f)
-//             {
-//                 throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be between 0.0 and 1.0");
-//                 return;
-//             }
-//             
-//             m_Value = value;
-//         }
-//         
-//         public override void Add(StatValueBase<float> other)
-//         {
-//             m_Value += other.GetValue();
-//             ClampValue();
-//         }
-//
-//         public override void Subtract(StatValueBase<float> other)
-//         {
-//             m_Value -= other.GetValue();
-//             ClampValue();
-//         }
-//
-//         public override void Multiply(StatValueBase<float> other)
-//         {
-//             m_Value *= other.GetValue();
-//             ClampValue();
-//         }
-//
-//         public override void Divide(StatValueBase<float> other)
-//         {
-//             m_Value += other.GetValue();
-//             ClampValue();
-//         }
-//
-//         protected void ClampValue()
-//         {
-//             m_Value = Mathf.Clamp(m_Value, 0.0f, 100.0f);
-//         }
-//     }
-//
-//     public class IntStatValue : StatValueBase<int>
-//     {
-//         public IntStatValue(int value)
-//         {
-//             m_Value = value;
-//         }
-//         
-//         public override void Add(StatValueBase<int> other)
-//         {
-//             m_Value += other.GetValue();
-//         }
-//
-//         public override void Subtract(StatValueBase<int> other)
-//         {
-//             m_Value -= other.GetValue();
-//         }
-//
-//         public override void Multiply(StatValueBase<int> other)
-//         {
-//             m_Value *= other.GetValue();
-//         }
-//
-//         public override void Divide(StatValueBase<int> other)
-//         {
-//             m_Value /= other.GetValue();
-//         }
-//     }
-//
-// #endregion
-
-    
-    
-    
-    public class EntityStatBase<T>
+    public class EntityStatBase
     {
         [SerializeField]
-        protected T m_StatValue;
-        public virtual T GetStatValue() { return m_StatValue; }
-        public virtual void SetStatValue(T value) { m_StatValue = value; }
-        public virtual void SetStatValue(EntityStatBase<T> stat) { m_StatValue = stat.GetStatValue(); }
+        protected float m_StatValue;
+        public virtual float GetStatValue() { return m_StatValue; }
+        public virtual void SetStatValue(float value) { m_StatValue = value; }
+        public virtual void SetStatValue(EntityStatBase stat) { m_StatValue = stat.GetStatValue(); }
         
         //Operators
-        public static EntityStatBase<T> operator +(EntityStatBase<T> statA, EntityStatBase<T> statB)
+        public static EntityStatBase operator +(EntityStatBase statA, EntityStatBase statB)
         {
-            EntityStatBase<T> newStat = new EntityStatBase<T>();
-            dynamic statAValue = statA.GetStatValue();
-            dynamic statBValue = statB.GetStatValue();
-
-            newStat.SetStatValue(statAValue + statBValue);
+            EntityStatBase newStat = new EntityStatBase();
+            newStat.SetStatValue(statA.GetStatValue() + statB.GetStatValue());
             return newStat;
         }
         
-        public static EntityStatBase<T> operator -(EntityStatBase<T> statA, EntityStatBase<T> statB)
+        public static EntityStatBase operator -(EntityStatBase statA, EntityStatBase statB)
         {
-            EntityStatBase<T> newStat = new EntityStatBase<T>();
-            dynamic statAValue = statA.GetStatValue();
-            dynamic statBValue = statB.GetStatValue();
-
-            newStat.SetStatValue(statAValue - statBValue);
+            EntityStatBase newStat = new EntityStatBase();
+            newStat.SetStatValue(statA.GetStatValue() - statB.GetStatValue());
             return newStat;
         }
         
-        public static EntityStatBase<T> operator *(EntityStatBase<T> statA, EntityStatBase<T> statB)
+        public static EntityStatBase operator *(EntityStatBase statA, EntityStatBase statB)
         {
-            EntityStatBase<T> newStat = new EntityStatBase<T>();
-            dynamic statAValue = statA.GetStatValue();
-            dynamic statBValue = statB.GetStatValue();
-
-            newStat.SetStatValue(statAValue * statBValue);
+            EntityStatBase newStat = new EntityStatBase();
+            newStat.SetStatValue(statA.GetStatValue() * statB.GetStatValue());
             return newStat;
         }
         
-        public static EntityStatBase<T> operator /(EntityStatBase<T> statA, EntityStatBase<T> statB)
+        public static EntityStatBase operator /(EntityStatBase statA, EntityStatBase statB)
         {
-            EntityStatBase<T> newStat = new EntityStatBase<T>();
-            dynamic statAValue = statA.GetStatValue();
-            dynamic statBValue = statB.GetStatValue();
-
-            newStat.SetStatValue(statAValue / statBValue);
+            EntityStatBase newStat = new EntityStatBase();
+            newStat.SetStatValue(statA.GetStatValue() / statB.GetStatValue());
             return newStat;
         }
     }
 
-    public class PercentageStat : EntityStatBase<float>
+    public class PercentageStat : EntityStatBase
     {
         public PercentageStat() { m_StatValue = 0.0f; }
         
@@ -199,7 +62,7 @@ namespace Entity
             ClampValue();
         }
 
-        public override void SetStatValue(EntityStatBase<float> stat)
+        public override void SetStatValue(EntityStatBase stat)
         {
             base.SetStatValue(stat);
             ClampValue();
@@ -217,19 +80,60 @@ namespace Entity
     }
     
     [Serializable]
-    public class HealthStat : EntityStatBase<float>
+    public class HealthStat : EntityStatBase
+    {
+        //#TODO change once we have a data structure for damages
+        public void TakeDamage(float physicalDamage, ArmorStat ownerArmorStat, ArmorPenetrationStat attackerArmorPenetrationStat, out float finalDamageTaken)
+        {
+            float finalOwnerArmor = ownerArmorStat.CalculateFinalArmorValue(attackerArmorPenetrationStat);
+            float finalPhysicalDamage = physicalDamage * (1.0f - finalOwnerArmor);
+            if (finalPhysicalDamage < 0.0f)
+            {
+                finalPhysicalDamage = 0.0f;
+            }
+
+            finalDamageTaken = finalPhysicalDamage;
+            
+            float currentHealth = GetStatValue();
+            currentHealth -= finalPhysicalDamage;
+            if (currentHealth <= 0.0f)
+            {
+                //#TODO Notify that we lost all health
+            }
+            
+            SetStatValue(currentHealth);
+        }
+        
+        public void TakeDamage(float magicDamage, MagicResistStat ownerMagicResistStat, MagicResistPenetrationStat attackerMagicPenetrationStat, out float finalDamageTaken)
+        {
+            float finalOwnerMagicResist = ownerMagicResistStat.CalculateFinalMagicResistValue(attackerMagicPenetrationStat);
+            float finalMagicDamage = magicDamage * (1.0f - finalOwnerMagicResist);
+            if (finalMagicDamage < 0.0f)
+            {
+                finalMagicDamage = 0.0f;
+            }
+
+            finalDamageTaken = finalMagicDamage;
+            
+            float currentHealth = GetStatValue();
+            currentHealth -= finalMagicDamage;
+            if (currentHealth <= 0.0f)
+            {
+                //#TODO Notify that we lost all health
+            }
+            
+            SetStatValue(currentHealth);
+        }
+    }
+
+    [Serializable]
+    public class ManaStat : EntityStatBase
     {
         
     }
 
     [Serializable]
-    public class ManaStat : EntityStatBase<float>
-    {
-        
-    }
-
-    [Serializable]
-    public class MoveSpeedStat : EntityStatBase<float>
+    public class MoveSpeedStat : EntityStatBase
     {
         
     }
@@ -239,10 +143,14 @@ namespace Entity
     {
         public ArmorStat() : base() {}
         public ArmorStat(float value) : base(value) {}
-
-        public override void SetStatValue(float value)
+        
+        public float CalculateFinalArmorValue(ArmorPenetrationStat armorPenetrationStat)
         {
-            base.SetStatValue(value);
+            float finalArmorValue = GetStatValue() - armorPenetrationStat.GetStatValue();
+            if (finalArmorValue < 0.0f)
+                return 0.0f;
+
+            return finalArmorValue;
         }
     }
 
@@ -251,6 +159,15 @@ namespace Entity
     {
         public MagicResistStat() : base() {}
         public MagicResistStat(float value) : base(value) {}
+        
+        public float CalculateFinalMagicResistValue(MagicResistPenetrationStat magicResistStat)
+        {
+            float finalMagicResistValue = GetStatValue() - magicResistStat.GetStatValue();
+            if (finalMagicResistValue < 0.0f)
+                return 0.0f;
+
+            return finalMagicResistValue;
+        }
     }
 
     [Serializable]
@@ -268,34 +185,54 @@ namespace Entity
     }
 
     [Serializable]
-    public class AttackRangeStat : EntityStatBase<float>
+    public class AttackRangeStat : EntityStatBase
     {
         
     }
 
     [Serializable]
-    public class AttackDamageStat : EntityStatBase<float>
+    public class PhysicalPowerStat : EntityStatBase
     {
         
     }
 
     [Serializable]
-    public class AbilityPowerStat : EntityStatBase<float>
+    public class AbilityPowerStat : EntityStatBase
     {
         
     }
 
     [Serializable]
-    public class AttackSpeedStat : EntityStatBase<float>
+    public class AttackSpeedStat : EntityStatBase
     {
-        
+        public float CalculateCooldownBetweenAttacks()
+        {
+            return 1.0f / GetStatValue();
+        }
     }
 
     [Serializable]
-    public class SpellCooldownStat : PercentageStat
+    public class ArmorPenetrationStat : PercentageStat
     {
-        public SpellCooldownStat() : base() {}
-        public SpellCooldownStat(float value) : base(value) {}
+
+    }
+
+    [Serializable]
+    public class MagicResistPenetrationStat : PercentageStat
+    {
+
+    }
+
+    [Serializable]
+    public class CooldownReductionStat : PercentageStat
+    {
+        public CooldownReductionStat() : base() {}
+        public CooldownReductionStat(float value) : base(value) {}
+
+        public float CalculateFinalCooldownValue(float baseCooldownValue)
+        {
+            return baseCooldownValue * (1.0f - GetStatValue());
+        }
     }
 
     [Serializable]

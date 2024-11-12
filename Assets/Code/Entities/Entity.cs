@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TypeReferences;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 //Entity is anything that we can interact with in the world. If it can be damaged/moved whatever, it should be an entity
 
@@ -15,41 +11,30 @@ namespace Entity
     public class EntityBase : MonoBehaviour
     {
         [SerializeField] public EntityDataset m_EntityDataset;
-        [SerializeField] protected Transform m_BasicAttackProjectileSpawnLocation;
         
         //Command components
-        [ClassImplements(typeof(IBasicAttackCommandComponent)), SerializeField]
-        private ClassTypeReference m_BasicAttackCommandComponentPicker;
-
-        private IBasicAttackCommandComponent m_BasicAttackCommandComponent;
+        [ClassImplements(typeof(Components.IHealthEntityComponent)), SerializeField]
+        private ClassTypeReference m_HealthEntityComponentPicker;
         
-        
-        //Basic info
-        protected string m_EntityName;
-        protected string m_EntityDescription;
-        protected string m_EntityAvatarPath;
+        private Components.IHealthEntityComponent m_HealthEntityComponent;
         
         //Stats
+        //#TODO: Move into struct
         protected HealthStat m_HealthStat = new HealthStat();
         protected ManaStat m_ManaStat = new ManaStat();
         protected MoveSpeedStat m_MoveSpeedStat = new MoveSpeedStat();
         protected ArmorStat m_ArmorStat = new ArmorStat();
         protected MagicResistStat m_MagicResistStat = new MagicResistStat();
+        protected ArmorPenetrationStat m_ArmorPenetrationStat = new ArmorPenetrationStat();
+        protected MagicResistPenetrationStat m_MagicResistPenetrationStat = new MagicResistPenetrationStat();
         protected LifestealStat m_LifestealStat = new LifestealStat();
         protected SpellVampStat m_SpellVampStat = new SpellVampStat();
         protected AttackRangeStat m_AttackRangeStat = new AttackRangeStat();
-        protected AttackDamageStat m_AttackDamageStat = new AttackDamageStat();
+        protected PhysicalPowerStat m_PhysicalPowerStat = new PhysicalPowerStat();
         protected AbilityPowerStat m_AbilityPowerStat = new AbilityPowerStat();
         protected AttackSpeedStat m_AttackSpeedStat = new AttackSpeedStat();
-        protected SpellCooldownStat m_SpellCooldownStat = new SpellCooldownStat();
+        protected CooldownReductionStat m_CooldownReductionStat = new CooldownReductionStat();
         protected CriticalStrikeChanceStat m_CriticalStrikeChanceStat = new CriticalStrikeChanceStat();
-        
-        //Other info
-        protected float m_CurrentXP;
-        protected float m_BasicAttackCooldown = 0.0f;
-
-        //If we attack a target that's outside attack range, we need to come to the target first
-        private EntityBase m_Target;
 
         private void Start()
         {
@@ -60,52 +45,19 @@ namespace Entity
             }
             
             InitializeStartingStatValues();
-            InitializeBasicInfo();
             InitializeNavMeshComponent();
-            InitializeCommandComponents();
+            InitializeEntityComponents();
         }
 
         private void Update()
         {
-            if (m_Target)
-            {
-                FollowTarget();
-            }
-            
-            //Update command components
-            m_BasicAttackCommandComponent?.Update();
         }
 
-        private void FollowTarget()
+        private void InitializeEntityComponents()
         {
-            float distance = Vector3.Distance(transform.position, m_Target.transform.position);
-            if (distance <= m_AttackRangeStat.GetStatValue())
+            if (m_HealthEntityComponentPicker != null)
             {
-                StopMoving();
-                m_BasicAttackCommandComponent.AttackTarget(this, m_Target);
-            }
-            else
-            {
-                GoToPosition(m_Target.transform.position, false);
-            }
-        }
-
-        public void SetTarget(EntityBase target)
-        {
-            if (target == null)
-            {
-                Debug.LogError("Target is null");
-                return;
-            }
-            
-            m_Target = target;
-        }
-
-        private void InitializeCommandComponents()
-        {
-            if (m_BasicAttackCommandComponentPicker != null)
-            {
-                m_BasicAttackCommandComponent = Activator.CreateInstance(m_BasicAttackCommandComponentPicker) as IBasicAttackCommandComponent;
+                m_HealthEntityComponent = Activator.CreateInstance(m_HealthEntityComponentPicker) as Components.IHealthEntityComponent;
             }
         }
         
@@ -116,21 +68,16 @@ namespace Entity
             m_MoveSpeedStat.SetStatValue(m_EntityDataset.m_MoveSpeedStat);
             m_ArmorStat.SetStatValue(m_EntityDataset.m_ArmorStat);
             m_MagicResistStat.SetStatValue(m_EntityDataset.m_MagicResistStat);
+            m_ArmorPenetrationStat.SetStatValue(m_EntityDataset.m_ArmorPenetrationStat);
+            m_MagicResistPenetrationStat.SetStatValue(m_EntityDataset.m_MagicResistPenetrationStat);
             m_LifestealStat.SetStatValue(m_EntityDataset.m_LifestealStat);
             m_SpellVampStat.SetStatValue(m_EntityDataset.m_SpellVampStat);
             m_AttackRangeStat.SetStatValue(m_EntityDataset.m_AttackRangeStat);
-            m_AttackDamageStat.SetStatValue(m_EntityDataset.m_AttackDamageStat);
+            m_PhysicalPowerStat.SetStatValue(m_EntityDataset.m_PhysicalPowerStat);
             m_AbilityPowerStat.SetStatValue(m_EntityDataset.m_AbilityPowerStat);
             m_AttackSpeedStat.SetStatValue(m_EntityDataset.m_AttackSpeedStat);
-            m_SpellCooldownStat.SetStatValue(m_EntityDataset.m_SpellCooldownStat);
+            m_CooldownReductionStat.SetStatValue(m_EntityDataset.m_CooldownReductionStat);
             m_CriticalStrikeChanceStat.SetStatValue(m_EntityDataset.m_CriticalStrikeChanceStat);
-        }
-
-        void InitializeBasicInfo()
-        {
-            m_EntityName = m_EntityDataset.m_EntityName;
-            m_EntityDescription = m_EntityDataset.m_EntityDescription;
-            m_EntityAvatarPath = m_EntityDataset.m_EntityAvatarPath;
         }
 
         void InitializeNavMeshComponent()
@@ -139,11 +86,8 @@ namespace Entity
             agent.speed = m_MoveSpeedStat.GetStatValue();
         }
 
-        public void GoToPosition(Vector3 position, bool removeTarget = true)
+        public void GoToPosition(Vector3 position)
         {
-            if (removeTarget)
-                m_Target = null;
-            
             NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.isStopped = false;
             navMeshAgent.SetDestination(position);
@@ -153,23 +97,6 @@ namespace Entity
         {
             GetComponent<NavMeshAgent>().isStopped = true;
         }
-
-        public void BasicAttackTarget(EntityBase target)
-        {
-            if (target == null)
-            {
-                Debug.LogError("Target is null");
-                return;
-            }
-            
-            if (m_BasicAttackCommandComponent == null)
-            {
-                Debug.LogError("Basic attack command component is not selected for this entity");
-                return;
-            }
-            
-            m_BasicAttackCommandComponent.AttackTarget(this, target);
-        }
         
         //Getters
         public AttackRangeStat GetAttackRangeStat()
@@ -177,14 +104,44 @@ namespace Entity
             return m_AttackRangeStat;
         }
 
-        public Transform GetBasicAttackProjectileSpawnPosition()
-        {
-            return m_BasicAttackProjectileSpawnLocation;
-        }
-
         public AttackSpeedStat GetAttackSpeedStat()
         {
             return m_AttackSpeedStat;
+        }
+
+        public ArmorStat GetArmorStat()
+        {
+            return m_ArmorStat;
+        }
+
+        public MagicResistStat GetMagicResistStat()
+        {
+            return m_MagicResistStat;
+        }
+
+        public ArmorPenetrationStat GetArmorPenetrationStat()
+        {
+            return m_ArmorPenetrationStat;
+        }
+
+        public MagicResistPenetrationStat GetMagicResistPenetrationStat()
+        {
+            return m_MagicResistPenetrationStat;
+        }
+
+        public HealthStat GetHealthStat()
+        {
+            return m_HealthStat;
+        }
+
+        public CooldownReductionStat GetCooldownReductionStat()
+        {
+            return m_CooldownReductionStat;
+        }
+
+        public Components.IHealthEntityComponent GetHealthEntityComponent()
+        {
+            return m_HealthEntityComponent;
         }
         
 #if UNITY_EDITOR
