@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,7 +32,8 @@ namespace Entity.Abilities
         [SerializeField] protected float m_PhysicalDamage = 0.0f;
         [SerializeField] protected float m_MagicDamage = 0.0f;
 
-        protected float m_CurrentCooldown;
+        [NonSerialized]
+        protected float m_CurrentCooldown = 0.0f;
         
         public abstract void PrecastAbility(EntityBase abilityOwner);
         public abstract void CastAbility(EntityBase abilityOwner);

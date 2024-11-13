@@ -12,10 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817e137ea0f03d94aac5e247910580b2, type: 3}
   m_Name: Dealer Dataset
   m_EditorClassIdentifier: 
-  stats:
-  - rid: 2195073004731368391
-  - rid: 2195073004731368378
-  - rid: 2195073004731368396
+  m_Stats:
+  - rid: 2195073015571283968
+  - rid: 2195073015571283969
+  - rid: 2195073015571283970
+  - rid: 2195073015571283971
+  - rid: 2195073015571283972
+  - rid: 2195073015571283973
+  - rid: 2195073015571283974
+  - rid: 2195073015571283976
+  - rid: 2195073015571283977
+  - rid: 2195073015571283978
+  - rid: 2195073015571283979
+  - rid: 2195073015571283980
+  - rid: 2195073015571283982
+  - rid: 2195073015571283983
+  - rid: 2195073015571283984
   m_EntityName: The Dealer
   m_EntityDescription: 
   m_EntityAvatarPath: 
@@ -24,15 +36,63 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2195073004731368378
-      type: {class: ArmorStat, ns: Entity, asm: Assembly-CSharp}
-      data:
-        m_StatValue: 0
-    - rid: 2195073004731368391
+    - rid: 2195073015571283968
       type: {class: HealthStat, ns: Entity, asm: Assembly-CSharp}
       data:
         m_StatValue: 0
-    - rid: 2195073004731368396
+    - rid: 2195073015571283969
+      type: {class: ManaStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283970
       type: {class: MoveSpeedStat, ns: Entity, asm: Assembly-CSharp}
       data:
         m_StatValue: 5
+    - rid: 2195073015571283971
+      type: {class: ArmorStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283972
+      type: {class: MagicResistStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283973
+      type: {class: LifestealStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283974
+      type: {class: SpellVampStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283976
+      type: {class: AttackRangeStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 10
+    - rid: 2195073015571283977
+      type: {class: PhysicalPowerStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283978
+      type: {class: AbilityPowerStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283979
+      type: {class: AttackSpeedStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0.6
+    - rid: 2195073015571283980
+      type: {class: ArmorPenetrationStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283982
+      type: {class: MagicResistPenetrationStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283983
+      type: {class: CooldownReductionStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0
+    - rid: 2195073015571283984
+      type: {class: CriticalStrikeChanceStat, ns: Entity, asm: Assembly-CSharp}
+      data:
+        m_StatValue: 0

@@ -11,10 +11,8 @@ namespace Entity
     [Serializable]
     public class StatsHolder
     {
-        
-        //private List<EntityStatBase> m_Stats = new List<EntityStatBase>();
-
         Dictionary<System.Type, EntityStatBase> m_Stats = new Dictionary<System.Type, EntityStatBase>();
+        
         public T GetStat<T>() where T : EntityStatBase
         {
             return m_Stats[typeof(T)] as T;

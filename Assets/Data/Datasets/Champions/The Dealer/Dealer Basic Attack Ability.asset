@@ -18,7 +18,7 @@ MonoBehaviour:
   m_AbilityType: 0
   m_CostType: 0
   m_CostAmount: 0
-  m_Cooldown: 1
+  m_Cooldown: 0
   m_PhysicalDamage: 0
   m_MagicDamage: 0
   m_ProjectilePrefab: {fileID: 6728952935163743157, guid: 0dbccb1a5c694ee41b0323713b051636, type: 3}
