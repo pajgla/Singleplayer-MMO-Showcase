@@ -18,9 +18,16 @@ namespace Entity.Abilities
             {
                 return;
             }
+
+            AttackRangeStat attackRangeStat = abilityOwner.GetEntityStat<AttackRangeStat>();
+            if (attackRangeStat == null)
+            {
+                Debug.LogError($"Entity {target.m_EntityDataset?.m_EntityName} is missing AttackRangeStat");
+                return;
+            }
             
             float distanceBetweenOwnerAndTarget = Vector3.Distance(abilityOwner.transform.position, target.transform.position);
-            if (distanceBetweenOwnerAndTarget <= abilityOwner.GetAttackRangeStat().GetStatValue())
+            if (distanceBetweenOwnerAndTarget <= attackRangeStat.GetStatValue())
             {
                 abilityOwner.StopMoving();
                 CastAbility(abilityOwner);
@@ -44,12 +51,19 @@ namespace Entity.Abilities
                 return;
             }
             
+            AttackSpeedStat attackSpeedStat = abilityOwner.GetEntityStat<AttackSpeedStat>();
+            if (attackSpeedStat == null)
+            {
+                Debug.LogError($"Entity {abilityOwner.m_EntityDataset?.m_EntityName} is missing AttackSpeedStat");
+                return;
+            }
+            
             BasicAttackProjectile newProjectile = Instantiate(m_ProjectilePrefab);
             //#TODO spawn at projectile spawn location, not from the entity location
             newProjectile.transform.position = abilityOwner.transform.position;
             newProjectile.Initialize(abilityOwner, target, this);
-
-            m_Cooldown = abilityOwner.GetAttackSpeedStat().CalculateCooldownBetweenAttacks(); 
+            
+            m_Cooldown = attackSpeedStat.CalculateCooldownBetweenAttacks(); 
             
             StartAbilityCooldown(abilityOwner);
         }

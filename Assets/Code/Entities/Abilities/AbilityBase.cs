@@ -63,7 +63,19 @@ namespace Entity.Abilities
                 return;
             }
 
-            m_CurrentCooldown = abilityOwner.GetCooldownReductionStat().CalculateFinalCooldownValue(m_Cooldown);
+            if (abilityOwner == null)
+            {
+                Debug.LogError("Provided null abilityOwner");
+                return;
+            }
+
+            CooldownReductionStat cooldownReductionStat = abilityOwner.GetEntityStat<CooldownReductionStat>();
+            if (cooldownReductionStat == null)
+            {
+                Debug.LogError($"Entity {abilityOwner.m_EntityDataset?.m_EntityName} is missing CooldownReductionStat!");
+            }
+            
+            m_CurrentCooldown = cooldownReductionStat.CalculateFinalCooldownValue(m_Cooldown);
         }
         
         public virtual bool CanUseAbility(EntityBase abilityOwner)

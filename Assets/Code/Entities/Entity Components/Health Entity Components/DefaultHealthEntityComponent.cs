@@ -15,12 +15,12 @@ namespace Entity.Components
             float potentialMagicDamage = 0.0f;
             usedAbility.CalculateAbilityDamage(out potentialPhysicalDamage, out potentialMagicDamage);
 
-            HealthStat ownerHealthStat = owner.GetHealthStat();
-            ArmorStat ownerArmorStat = owner.GetArmorStat();
-            MagicResistStat ownerMagicResistStat = owner.GetMagicResistStat();
+            HealthStat ownerHealthStat = owner.GetEntityStat<HealthStat>();
+            ArmorStat ownerArmorStat = owner.GetEntityStat<ArmorStat>();
+            MagicResistStat ownerMagicResistStat = owner.GetEntityStat<MagicResistStat>();
             
-            ArmorPenetrationStat attackerArmorPenetrationStat = attacker.GetArmorPenetrationStat();
-            MagicResistPenetrationStat attackerMagicPenetrationStat = attacker.GetMagicResistPenetrationStat();
+            ArmorPenetrationStat attackerArmorPenetrationStat = attacker.GetEntityStat<ArmorPenetrationStat>();
+            MagicResistPenetrationStat attackerMagicPenetrationStat = attacker.GetEntityStat<MagicResistPenetrationStat>();
 
             float physicalDamageTaken = 0.0f;
             ownerHealthStat.TakeDamage(potentialPhysicalDamage, ownerArmorStat, attackerArmorPenetrationStat, out physicalDamageTaken);
