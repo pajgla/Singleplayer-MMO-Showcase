@@ -31,7 +31,7 @@ public class InGameCameraController : MonoBehaviour
         
         m_CameraTargetGroundDistance = m_StartingCameraTargetGroundDistance;
 
-        ControlsManager controlsManager = ControlsManager.Get();
+        PlayerControlsManager controlsManager = PlayerControlsManager.Get();
         if (controlsManager == null)
         {
             Debug.LogError("PlayerControlsManager is null");
@@ -101,7 +101,7 @@ public class InGameCameraController : MonoBehaviour
         if (m_ShouldFollowChampion)
             return;
 
-        ControlsManager controlsManager = ControlsManager.Get();
+        PlayerControlsManager controlsManager = PlayerControlsManager.Get();
         if (controlsManager == null)
             return;
 

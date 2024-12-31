@@ -189,7 +189,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -206,8 +206,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EntityDataset: {fileID: 11400000, guid: daddec1a1c15bd7429a83f7b95fc3772, type: 2}
-  m_HealthEntityComponentPicker:
-    _classRef: Entity.Components.DefaultHealthEntityComponent, Assembly-CSharp
+  m_HealthEntityControllerPicker:
+    _classRef: Entity.Controllers.DefaultHealthEntityController, Assembly-CSharp
+  m_MovementEntityControllerPicker:
+    _classRef: Entity.Controllers.DefaultMovementEntityController, Assembly-CSharp
 --- !u!114 &-2392512285041108602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +225,8 @@ MonoBehaviour:
   m_EntityAbilities:
   - m_Ability: {fileID: 11400000, guid: ab7bb9179a2c9d44e814893be4632362, type: 2}
     m_TriggerKey: 324
+  - m_Ability: {fileID: 11400000, guid: 82bdbf3fad305da48adf4dd298fed1e1, type: 2}
+    m_TriggerKey: 113
 --- !u!1001 &8931035122638461955
 PrefabInstance:
   m_ObjectHideFlags: 0

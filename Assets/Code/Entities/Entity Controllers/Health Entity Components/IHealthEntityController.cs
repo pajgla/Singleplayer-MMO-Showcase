@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using Entity.Abilities;
-using UnityEngine;
 
-namespace Entity.Components
+namespace Entity.Controllers
 {
-    public interface IHealthEntityComponent
+    public interface IHealthEntityController : IEntityController
     {
         public struct AttackerInfo
         {

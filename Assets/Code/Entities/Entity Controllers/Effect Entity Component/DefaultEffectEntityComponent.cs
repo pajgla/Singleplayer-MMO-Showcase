@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Entity.Abilities;
 using UnityEngine;
 
-namespace Entity.Components
+namespace Entity.Controllers
 {
     public class DefaultEffectEntityComponent : IEffectEntityComponent
     {

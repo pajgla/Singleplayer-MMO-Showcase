@@ -36,7 +36,7 @@ namespace Entity
 
             if (Vector3.Distance(transform.position, m_Target.transform.position) < m_ProjectileHitDistance)
             {
-                m_Target.GetHealthEntityComponent().TakeDamage(m_Target, m_Owner, m_ParentAbility);
+                m_Target.GetHealthEntityController().TakeDamage(m_Target, m_Owner, m_ParentAbility);
                 Destroy(this.gameObject);
             }
         }

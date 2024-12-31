@@ -14,6 +14,11 @@ namespace Entity.Abilities
         void Awake()
         {
             m_Owner = GetComponent<EntityBase>();
+
+            foreach (AbilityHolder ability in m_EntityAbilities)
+            {
+                ability.Initialize(m_Owner);
+            }
         }
 
         void Update()
@@ -30,7 +35,7 @@ namespace Entity.Abilities
             {
                 if (abilityHolder.GetTriggerKeyCode() == keycode)
                 {
-                    abilityHolder.GetAbility().PrecastAbility(m_Owner);
+                    abilityHolder.GetAbility().PrecastAbility();
                     break;
                 }
             }

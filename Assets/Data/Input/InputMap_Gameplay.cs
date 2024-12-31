@@ -62,6 +62,15 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CastFirstSpell"",
+                    ""type"": ""Button"",
+                    ""id"": ""a29f299c-7159-453c-a6a4-d9fe6057316f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
                     ""action"": ""ChampionCameraLock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c280b529-f721-405a-ba97-18e8687222bd"",
+                    ""path"": ""<Keyboard>/#(Q)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CastFirstSpell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +140,7 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
         m_Default_MouseLeftClick = m_Default.FindAction("MouseLeftClick", throwIfNotFound: true);
         m_Default_MouseRightClick = m_Default.FindAction("MouseRightClick", throwIfNotFound: true);
         m_Default_ChampionCameraLock = m_Default.FindAction("ChampionCameraLock", throwIfNotFound: true);
+        m_Default_CastFirstSpell = m_Default.FindAction("CastFirstSpell", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,6 +206,7 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_MouseLeftClick;
     private readonly InputAction m_Default_MouseRightClick;
     private readonly InputAction m_Default_ChampionCameraLock;
+    private readonly InputAction m_Default_CastFirstSpell;
     public struct DefaultActions
     {
         private @InputMap_Gameplay m_Wrapper;
@@ -193,6 +215,7 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
         public InputAction @MouseLeftClick => m_Wrapper.m_Default_MouseLeftClick;
         public InputAction @MouseRightClick => m_Wrapper.m_Default_MouseRightClick;
         public InputAction @ChampionCameraLock => m_Wrapper.m_Default_ChampionCameraLock;
+        public InputAction @CastFirstSpell => m_Wrapper.m_Default_CastFirstSpell;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,6 +237,9 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
             @ChampionCameraLock.started += instance.OnChampionCameraLock;
             @ChampionCameraLock.performed += instance.OnChampionCameraLock;
             @ChampionCameraLock.canceled += instance.OnChampionCameraLock;
+            @CastFirstSpell.started += instance.OnCastFirstSpell;
+            @CastFirstSpell.performed += instance.OnCastFirstSpell;
+            @CastFirstSpell.canceled += instance.OnCastFirstSpell;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -230,6 +256,9 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
             @ChampionCameraLock.started -= instance.OnChampionCameraLock;
             @ChampionCameraLock.performed -= instance.OnChampionCameraLock;
             @ChampionCameraLock.canceled -= instance.OnChampionCameraLock;
+            @CastFirstSpell.started -= instance.OnCastFirstSpell;
+            @CastFirstSpell.performed -= instance.OnCastFirstSpell;
+            @CastFirstSpell.canceled -= instance.OnCastFirstSpell;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -253,5 +282,6 @@ public partial class @InputMap_Gameplay: IInputActionCollection2, IDisposable
         void OnMouseLeftClick(InputAction.CallbackContext context);
         void OnMouseRightClick(InputAction.CallbackContext context);
         void OnChampionCameraLock(InputAction.CallbackContext context);
+        void OnCastFirstSpell(InputAction.CallbackContext context);
     }
 }

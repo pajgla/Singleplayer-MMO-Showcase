@@ -113,9 +113,9 @@ namespace Entity
             
             float currentHealth = GetStatValue();
             currentHealth -= finalPhysicalDamage;
-            if (currentHealth <= 0.0f)
+            if (currentHealth < 0.0f)
             {
-                //#TODO Notify that we lost all health
+                currentHealth = 0.0f;
             }
             
             SetStatValue(currentHealth);

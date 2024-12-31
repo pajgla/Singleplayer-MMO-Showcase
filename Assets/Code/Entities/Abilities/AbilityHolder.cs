@@ -9,14 +9,17 @@ namespace Entity.Abilities
 
     public class AbilityHolder
     {
-        EntityBase m_Owner;
-        
         [SerializeField]
         AbilityBase m_Ability;
         
         [SerializeField]
         KeyCode m_TriggerKey = KeyCode.Q;
 
+        public void Initialize(EntityBase owner)
+        {
+            m_Ability.Initialize(owner);
+        }
+        
         public void Update()
         {
             if (m_Ability == null)

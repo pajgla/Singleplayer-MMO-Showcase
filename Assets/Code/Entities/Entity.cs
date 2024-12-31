@@ -2,6 +2,7 @@ using System;
 using TypeReferences;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 //Entity is anything that we can interact with in the world. If it can be damaged/moved whatever, it should be an entity
 
@@ -12,10 +13,14 @@ namespace Entity
     {
         [SerializeField] public EntityDataset m_EntityDataset;
         
-        //Entity components
-        [ClassImplements(typeof(Components.IHealthEntityComponent)), SerializeField]
-        private ClassTypeReference m_HealthEntityComponentPicker;
-        private Components.IHealthEntityComponent m_HealthEntityComponent;
+        //#TODO Encapsulate controllers
+        [ClassImplements(typeof(Controllers.IHealthEntityController)), SerializeField]
+        private ClassTypeReference m_HealthEntityControllerPicker;
+        private Controllers.IHealthEntityController m_HealthEntityController;
+        
+        [ClassImplements(typeof(Controllers.IMovementEntityController)), SerializeField]
+        private ClassTypeReference m_MovementEntityControllerPicker;
+        private Controllers.IMovementEntityController m_MovementEntityController;
         
         //Stats
         [SerializeField]
@@ -29,51 +34,39 @@ namespace Entity
                 return;
             }
             m_StatsHolder.InitializeStatsFromDataset(m_EntityDataset);
-            InitializeNavMeshComponent();
-            InitializeEntityComponents();
+            InitializeEntityControllers();
         }
 
-        private void Update()
+        private void InitializeEntityControllers()
         {
-        }
-
-        private void InitializeEntityComponents()
-        {
-            if (m_HealthEntityComponentPicker != null)
+            if (m_HealthEntityControllerPicker.Type != null)
             {
-                m_HealthEntityComponent = Activator.CreateInstance(m_HealthEntityComponentPicker) as Components.IHealthEntityComponent;
-            }
-        }
-
-        void InitializeNavMeshComponent()
-        {
-            MoveSpeedStat moveSpeedStat = m_StatsHolder.GetStat<MoveSpeedStat>();
-            if (moveSpeedStat == null)
-            {
-                Debug.LogError("Entity is missing MoveSpeedStat");
-                return;
+                m_HealthEntityController = Activator.CreateInstance(m_HealthEntityControllerPicker) as Controllers.IHealthEntityController;
+                m_HealthEntityController.Initialize(this);
             }
             
-            NavMeshAgent agent = GetComponent<NavMeshAgent>();
-            agent.speed = moveSpeedStat.GetStatValue();
+            if (m_MovementEntityControllerPicker.Type != null)
+            {
+                m_MovementEntityController = Activator.CreateInstance(m_MovementEntityControllerPicker) as Controllers.IMovementEntityController;
+                m_MovementEntityController.Initialize(this);
+            }
         }
 
-        public void GoToPosition(Vector3 position)
+        void Update()
         {
-            NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
-            navMeshAgent.isStopped = false;
-            navMeshAgent.SetDestination(position);
+            m_HealthEntityController?.Update();
+            m_MovementEntityController?.Update();
         }
 
-        public void StopMoving()
-        {
-            GetComponent<NavMeshAgent>().isStopped = true;
-        }
-        
         //Getters
-        public Components.IHealthEntityComponent GetHealthEntityComponent()
+        public Controllers.IHealthEntityController GetHealthEntityController()
         {
-            return m_HealthEntityComponent;
+            return m_HealthEntityController;
+        }
+
+        public Controllers.IMovementEntityController GetMovementEntityController()
+        {
+            return m_MovementEntityController;
         }
 
         public T GetEntityStat<T>() where T : EntityStatBase

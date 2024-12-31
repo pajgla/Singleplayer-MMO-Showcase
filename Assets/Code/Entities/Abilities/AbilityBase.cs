@@ -34,11 +34,19 @@ namespace Entity.Abilities
 
         [NonSerialized]
         protected float m_CurrentCooldown = 0.0f;
+        [NonSerialized]
+        protected EntityBase m_OwnerEntity = null;
         
-        public abstract void PrecastAbility(EntityBase abilityOwner);
-        public abstract void CastAbility(EntityBase abilityOwner);
-        public abstract void CancelAbility(EntityBase abilityOwner);
+        public abstract void PrecastAbility();
+        public abstract void CastAbility();
+        public abstract void CancelAbility();
 
+
+        public virtual void Initialize(EntityBase ownerEntity)
+        {
+            m_OwnerEntity = ownerEntity;
+        }
+        
         public virtual void Update()
         {
             UpdateCooldown();
@@ -57,7 +65,7 @@ namespace Entity.Abilities
             magicDamage = m_MagicDamage;
         }
 
-        public virtual void StartAbilityCooldown(EntityBase abilityOwner)
+        public virtual void StartAbilityCooldown()
         {
             if (m_CurrentCooldown > 0.0f)
             {
@@ -65,22 +73,22 @@ namespace Entity.Abilities
                 return;
             }
 
-            if (abilityOwner == null)
+            if (m_OwnerEntity == null)
             {
                 Debug.LogError("Provided null abilityOwner");
                 return;
             }
 
-            CooldownReductionStat cooldownReductionStat = abilityOwner.GetEntityStat<CooldownReductionStat>();
+            CooldownReductionStat cooldownReductionStat = m_OwnerEntity.GetEntityStat<CooldownReductionStat>();
             if (cooldownReductionStat == null)
             {
-                Debug.LogError($"Entity {abilityOwner.m_EntityDataset?.m_EntityName} is missing CooldownReductionStat!");
+                Debug.LogError($"Entity {m_OwnerEntity.m_EntityDataset?.m_EntityName} is missing CooldownReductionStat!");
             }
             
             m_CurrentCooldown = cooldownReductionStat.CalculateFinalCooldownValue(m_Cooldown);
         }
         
-        public virtual bool CanUseAbility(EntityBase abilityOwner)
+        public virtual bool CanUseAbility()
         {
             return m_CurrentCooldown <= 0.0f;
         }
